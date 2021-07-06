@@ -74,4 +74,4 @@ router.delete('/:id', (req, res) => {
     });
 });
 
-module.exports = Comment;
+module.exports = router;

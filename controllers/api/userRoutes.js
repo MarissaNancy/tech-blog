@@ -102,4 +102,4 @@ router.delete('/:id', (req, res ) => {
     })
 });
 
-module.exports = User;
+module.exports = router;

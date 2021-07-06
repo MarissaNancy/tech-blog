@@ -4,7 +4,7 @@ console.log(Post);//
 const postData = require('./postData.json');
 const { User } = require('../models');
 const userData = require('./userData.json');
-
+// add comments too?
 
 const seedDatabase = async () => {
     try {

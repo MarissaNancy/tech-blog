@@ -99,4 +99,4 @@ router.delete('/:id', (req, res) => {
     });
 });
 
-module.exports = Post;
+module.exports = router;
