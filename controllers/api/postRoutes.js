@@ -6,7 +6,6 @@ const sequelize = require("../../config/connection");
 router.get("/", (req, res) => {
   Post.findAll({
     attributes: [
-      //id title content
       "id",
       "title",
       "content",
@@ -28,7 +27,7 @@ router.get("/", (req, res) => {
       },
     ],
   })
-    .then((PostData) => res.json(PostData))
+    .then((dbPostData) => res.json(dbPostData))
     .catch((err) => {
       console.log(err);
       res.status(500).json(err);
@@ -57,12 +56,12 @@ router.get("/:id", (req, res) => {
       },
     ],
   })
-    .then((PostData) => {
-      if (!PostData) {
+    .then((dbPostData) => {
+      if (!dbPostData) {
         res.status(404).json({ message: "No post found with this id " });
         return;
       }
-      res.json(PostData);
+      res.json(dbPostData);
     })
     .catch((err) => {
       console.log(err);
@@ -76,7 +75,7 @@ router.post('/', (req,res) =>{
         content: req.body.content,
         user: req.usersession.user_id//
     })
-    .then(PostData => res.json(PostData))
+    .then(dbPostData => res.json(dbPostData))
     .catch(err => {
         console.log(err);
         res.status(500).json(err);
@@ -87,11 +86,11 @@ router.delete('/:id', (req, res) => {
     Post.destroy({
         where: { id: req.params.id }
     })
-    .then(PostData => {
-        if (!PostData){
+    .then(dbPostData => {
+        if (!dbPostData){
             res.status(404).json({ message: 'No post with this id'});
         }
-        res.json(PostData);
+        res.json(dbPostData);
     })
     .catch(err => {
         console.log(err);

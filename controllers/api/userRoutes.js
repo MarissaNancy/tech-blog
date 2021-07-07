@@ -5,7 +5,7 @@ router.get('/', (req, res) => {
     User.findAll({
         attributes: { exclude: ['password'] } //dblcheck syntax
     })
-    .then(UserData => res.json(UserData))
+    .then(dbUserData => res.json(dbUserData))
     .catch(err => {
         console.log(err);
         res.status(500).json(err);
@@ -34,12 +34,12 @@ router.get('/:id', (req, res) => {
     }
     ]
     })
-    .then(UserData => {
-        if (!UserData) {
+    .then(dbUserData => {
+        if (!dbUserData) {
             res.status(404).json({ message: 'No user found' });
             return;
         }
-        res.json(UserData);
+        res.json(dbUserData);
     })
     .catch(err => {
         console.log(err);
@@ -52,13 +52,13 @@ router.post('/', (req, res) => {
         username: req.body.username,
         password: req.body.password
     })
-    .then(UserData => {
+    .then(dbUserData => {
         req.session.save(() => {
             req.session.user_id = UserData.id;
             req.session.username = UserData.username;
             req.session.loggedIn = true;//
 
-            res.json(UserData);
+            res.json(dbUserData);
         });
     })
     .catch(err => {
@@ -72,12 +72,12 @@ router.put('/:id', (req, res) =>{
         individualHooks: true,
         where: { id: req.params.id }
     })
-    .then(UserData => {
-        if(!UserData[0]){
+    .then(dbUserData => {
+        if(!dbUserData[0]){
             res.status(404).json({ message: 'No user found with this id'})
             return;
         }
-        res.json(UserData);
+        res.json(dbUserData);
     })
     .catch(err => {
         console.log(err);
@@ -89,12 +89,12 @@ router.delete('/:id', (req, res ) => {
     User.destroy({
         where: { id : req.params.id }
     })
-    .then(UserData => {
-        if (!UserData){
+    .then(dbUserData => {
+        if (!dbUserData){
             res.status(404).json({ message: 'No user found with id'});
             return;
         }
-        res.json(UserData);
+        res.json(dbUserData);
     })
     .catch(err => {
         console.log(err);

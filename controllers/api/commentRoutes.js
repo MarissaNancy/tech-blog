@@ -3,7 +3,7 @@ const { Comment } = require('../../models');
 
 router.get('/', (req, res) => {
     Comment.findAll()//
-        .then(CommentData => res.json(CommentData))
+        .then(dbCommentData => res.json(dbCommentData))
         .catch(err => {
             console.log(err);
             res.status(500).json(err);
@@ -16,7 +16,7 @@ router.get('/:id', (req, res) => {
             id: req.params.id
         }
     })
-    .then(CommentData => res.json(CommentData))
+    .then(dbCommentData => res.json(dbCommentData))
     .catch(err =>{
         console.log(err);
         res.status(500).json(err);
@@ -30,7 +30,7 @@ router.post('/', (req, res) => {
             post_id: req.body.post_id,
             user_id: req.session.user_id
         })
-        .then(CommentData => res.json(CommentData))
+        .then(dbCommentData => res.json(dbCommentData))
         .catch(err => {
             console.log(err);
             res.status(400).json(err);
@@ -45,12 +45,12 @@ router.put('/:id', (req, res) => {
     {
         where: { id: req.params.id}
     })
-    .then(CommentData => {
-        if (!CommentData) {
+    .then(dbCommentData => {
+        if (!dbCommentData) {
             res.status(404).json({ message: 'No comment with this id'});
             return;
         }
-        res.json(CommentData);
+        res.json(dbCommentData);
     }).catch(err => {
         console.log(err);
         res.status(500).json(err);
@@ -61,12 +61,12 @@ router.delete('/:id', (req, res) => {
     Comment.destroy({
         where: { id: req.params.id}
     })
-    .then(CommentData => {
-        if (!CommentData){
+    .then(dbCommentData => {
+        if (!dbCommentData){
             res.status(404).json({ message: 'No comment with this id' });
             return;
         }
-        res.json(CommentData);
+        res.json(dbCommentData);
     })
     .catch(err => {
         console.log(err);
