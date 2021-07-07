@@ -9,7 +9,7 @@ router.get("/", (req, res) => {
       "id",
       "title",
       "content",
-      //created at but where does that come from
+      "created_at"
     ],
     include: [
       {
@@ -18,8 +18,7 @@ router.get("/", (req, res) => {
       },
       {
         model: Comment,
-        //id commenttext userid postid
-        attributes: ["id", "comment_text", "user_id", "post_id"],
+        attributes: ["id", "comment_text", "user_id", "post_id", "created_at"],
         include: {
           model: User,
           attributes: ["username"],
@@ -39,7 +38,7 @@ router.get("/:id", (req, res) => {
     where: {
       id: req.params.id,
     },
-    attributes: ["id", "title", "content"],
+    attributes: ["id", "title", "content", "created_at"],
     include: [
       {
         model: User,
@@ -47,8 +46,7 @@ router.get("/:id", (req, res) => {
       },
       {
         model: Comment,
-        //id commenttext userid postid
-        attributes: ["id", "comment_text", "user_id", "post_id"],
+        attributes: ["id", "comment_text", "user_id", "post_id", "created_at"],
         include: {
           model: User,
           attributes: ["username"],
@@ -73,13 +71,35 @@ router.post('/', (req,res) =>{
     Post.create({
         title: req.body.title,
         content: req.body.content,
-        user: req.usersession.user_id//
+        user_id: req.usersession.user_id//
     })
     .then(dbPostData => res.json(dbPostData))
     .catch(err => {
         console.log(err);
         res.status(500).json(err);
     });
+});
+
+router.put("/:id", (req, res) =>{
+  Post.update({
+    title: req.body.title,
+    content: req.body.content
+  },
+  {
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(dbPostData => {
+    if (!dbPostData){
+      res.status(404).json({ message: 'No post with this id!' });
+    }
+    res.json(dbPostData);
+  })
+  .catch(err =>{
+    console.log(err);
+    res.status(500).json(err);
+  });
 });
 
 router.delete('/:id', (req, res) => {

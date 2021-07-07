@@ -8,7 +8,7 @@ router.get("/", (req, res) => {
       "id",
       "title",
       "content",
-      //created at but where does that come from
+      "created_at"
     ],
     include: [
       {
@@ -18,16 +18,16 @@ router.get("/", (req, res) => {
       {
         model: Comment,
         //id commenttext userid postid
-        attributes: ["id", "comment_text", "user_id", "post_id"],
+        attributes: ["id", "comment_text", "user_id", "post_id", "created_at"],
         include: {
           model: User,
           attributes: ["username"],
         },
       },
     ],
-  })
-    .then((PostData) => {
-      const posts = PostData.get;
+  }) //check following
+    .then((dbPostData) => {
+      const posts = dbPostData.get;
       console.log(posts);
       res.render({ Post });
     })
@@ -37,12 +37,20 @@ router.get("/", (req, res) => {
     });
 });
 
+router.get("/login", (req, res) => {
+  if (req.session.loggedIn) {
+    res.redirect('/');
+    return;
+  }
+  res.render("login");
+});
+
 router.get("/post/:id", (req, res) => {
   Post.findOne({
     where: {
       id: req.params.id,
     },
-    attributes: ["id", "title", "content"],
+    attributes: ["id", "title", "content", "created_at"],
     include: [
       {
         model: User,
@@ -50,7 +58,7 @@ router.get("/post/:id", (req, res) => {
       },
       {
         model: Comment,
-        attributes: ["id", "comment_text", "user_id", "post_id"],
+        attributes: ["id", "comment_text", "user_id", "post_id", "created_at"],
         include: {
           model: User,
           attributes: ["username"],
@@ -58,12 +66,12 @@ router.get("/post/:id", (req, res) => {
       },
     ],
   })
-    .then((PostData) => {
-      if (!PostData) {
+    .then((dbPostData) => {
+      if (!dbPostData) {
         res.status(404).json({ message: "No post with this id" });
         return;
       }
-      const post = PostData.get;
+      const post = dbPostData.get;
       console.log(post);
       res.render("singlepost", { Post });
     })
@@ -71,14 +79,6 @@ router.get("/post/:id", (req, res) => {
       console.log(err);
       res.status(500).json(err);
     });
-});
-
-router.get("/login", (req, res) => {
-  // if (req.session.loggedIn) {
-  //   res.redirect('/');
-  //   return;
-  // }
-  res.render("login");
 });
 
 module.exports = router;
