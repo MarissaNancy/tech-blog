@@ -29,7 +29,7 @@ router.get("/", (req, res) => {
     .then((dbPostData) => {
       const posts = dbPostData.get;
       console.log(posts);
-      res.render({ Post });
+      res.render('homepage',{ posts });
     })
     .catch((err) => {
       console.log(err);
@@ -73,7 +73,7 @@ router.get("/post/:id", (req, res) => {
       }
       const post = dbPostData.get;
       console.log(post);
-      res.render("singlepost", { Post });
+      res.render("singlepost", { post });
     })
     .catch((err) => {
       console.log(err);
