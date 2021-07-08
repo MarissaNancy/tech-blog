@@ -16,7 +16,7 @@ async function newPost(event) {
   });
 
   if (response.ok) {
-      document.location.reload();
+      document.location.replace("/dashboard");
   } else {
       alert('Post failed. Please try again.');
   }

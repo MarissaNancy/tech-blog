@@ -27,13 +27,13 @@ router.get("/", (req, res) => {
     ],
   }) //check following
     .then((dbPostData) => {
-      const posts = dbPostData.get;
-      console.log(posts);
-      res.render('homepage',{ posts });
+      const post = dbPostData.map(post => post.get({ plain: true}));
+      res.render('homepage',{ post });
     })
     .catch((err) => {
       console.log(err);
       res.status(500).json(err);
+    // res.json(post);
     });
 });
 

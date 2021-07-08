@@ -16,7 +16,7 @@ Post.init(
         allowNull: false
       },
       content: {
-        type: DataTypes.TEXT,//does this need a char extended limit
+        type: DataTypes.TEXT,
         allowNull: false
       },
       user_id: {
