@@ -1,48 +1,22 @@
-<div class="row">
-  <div class="col-auto">
-    <h2>Welcome, {{name}}!</h2>
-  </div>
-</div>
-
-<div class="row mt-4">
-  <div class="col-md-6">
-    <h3>Create a New Blog Post:</h3>
-
-    <form class="form new-project-form">
-      <div class="form-group">
-        <label for="project-name">Blog Title:</label>
-        <input class="form-input" type="text" id="project-name" name="project-name" />
-      </div>
-      <div class="form-group">
-        <label for="project-funding">needed funding ($):</label>
-        <input class="form-input" type="number" id="project-funding" name="project-funding" />
-      </div>
-      <div class="form-group">
-        <label for="project-desc">description:</label>
-        <textarea class="form-input" id="project-desc" name="project-desc"></textarea>
-      </div>
-      <div class="form-group">
-        <button type="submit" class="btn btn-primary">Create</button>
-      </div>
-    </form>
-  </div>
-
-  {{#if projects.length}}
-  <div class="col-md-6 project-list">
-    <h3>Current Posts:</h3>
-
-    {{#each projects as |project|}}
-    <div class="row mb-2">
-      <div class="col-md-8">
-        <h4><a href="/project/{{project.id}}">{{project.name}}</a></h4>
-      </div>
-      <div class="col-md-4">
-        <button class="btn btn-sm btn-danger" data-id="{{project.id}}">DELETE</button>
-      </div>
+<div class="home all-posts">
+    <div class="home-header">
+        <h6 class="home all-posts-header">Latest Blog Posts</h6>
     </div>
-    {{/each}}
-  </div>
-  {{/if}}
-</div>
+    
 
-<script src="./js/profile.js"></script>
+    {{#each blog_posts as |post|}}
+    <a href="/post/{{post.id}}">
+        <div class="home blog-post">
+            <div class="home post-header">
+                <h3 class="home post-title">{{post.title}}</h3>
+                <p class="home post-content">{{post.content}}</p>
+            </div>
+            <div class="home post-details">
+                <p class="home post-user">Posted by: @{{post.user_id}}</p>
+                <p class="home post-date"> Date Posted: {{format_date post.created_at}} </p>
+            </div>
+        </div>
+    </a>
+    {{/each}}
+
+</div>
